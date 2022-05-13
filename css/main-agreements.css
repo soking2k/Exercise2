@@ -126,7 +126,6 @@ body {
 .MyWorkFlow{
   display: flex;
   flex-direction: column;
-  margin: 20px;
 }
 .WorkFlow{
   width: 100%;
