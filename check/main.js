@@ -1,59 +1,67 @@
+const columnDefs = [
+  
+    
+      { field: 'athlete', filter: 'agTextColumnFilter', minWidth: 200 },
+      { field: 'age' },
+      { field: 'country', minWidth: 200 },
+      { field: 'country', minWidth: 200 },
+      { field: 'country', minWidth: 200 },
+      { field: 'country', minWidth: 200 },
+      { field: 'country', minWidth: 200 },
+      { field: 'country', minWidth: 200 },
+
+  
+];
+
 const gridOptions = {
-  columnDefs: [
-    // group cell renderer needed for expand / collapse icons
-    { field: 'name', cellRenderer: 'agGroupCellRenderer' },
-    { field: 'account' },
-    { field: 'calls' },
-    { field: 'calls' },
-    { field: 'calls' },
-    { field: 'calls' },
-    { field: 'calls' },
-    { field: 'calls' },
 
-    { field: 'minutes', valueFormatter: "x.toLocaleString() + 'm'" },
-  ],
-  defaultColDef: {
-    flex: 1,
-    sortable: true,
-    filter: true,
-  },
-  masterDetail: true,
-  detailCellRendererParams: {
-    detailGridOptions: {
-      columnDefs: [
-        { field: 'callId' },
-        { field: 'direction' },
-        { field: 'number', minWidth: 150 },
-        { field: 'duration', valueFormatter: "x.toLocaleString() + 's'" },
-        { field: 'switchCode', minWidth: 150 },
+  columnDefs: columnDefs,
+  
+  pagination: true,
+  paginationPageSize: 25,
+
+  sideBar: {
+      toolPanels: [
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+          toolPanelParams: {
+          suppressRowGroups: true,
+          suppressValues: true,      
+          },
+        },
       ],
-      defaultColDef: {
-        flex: 1,
-        filter: true,
-        sortable: true,
-      },
+      defaultToolPanel: 'columns',
     },
-    getDetailRowData: function (params) {
-      params.successCallback(params.data.callRecords);
-    },
-  },
-  onFirstDataRendered: onFirstDataRendered,
 };
-
-function onFirstDataRendered(params) {
-  // arbitrarily expand a row for presentational purposes
-  setTimeout(function () {
-    params.api.getDisplayedRowAtIndex(1).setExpanded(true);
-  }, 0);
+function showPivotModeSection() {
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.setPivotModeSectionVisible(true);
 }
 
+function showRowGroupsSection() {
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.setRowGroupsSectionVisible(true);
+}
+
+function showValuesSection() {
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.setValuesSectionVisible(true);
+}
+
+function showPivotSection() {
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.setPivotSectionVisible(true);
+}
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
-  fetch('https://www.ag-grid.com/example-assets/master-detail-data.json')
+
+  fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
     .then((response) => response.json())
-    .then(function (data) {
-      gridOptions.api.setRowData(data);
-    });
+    .then((data) => gridOptions.api.setRowData(data));
 });

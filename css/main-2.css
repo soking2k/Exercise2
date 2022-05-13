@@ -154,6 +154,36 @@ body {
   background-color: #138496;
   border-color: #117a8b;
 }
+.breadcrumb-item {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: "/";
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: none;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+
+
 @media only screen and (max-width: 1450px) {
   .item_hashtag{
     width: 100%;
